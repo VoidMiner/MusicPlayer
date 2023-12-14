@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!-- item_track.xml -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,12 +26,32 @@
             app:srcCompat="@drawable/ic_music_placeholder"
             tools:ignore="ContentDescription" />
 
+        <ImageView
+            android:id="@+id/artistImageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_toEndOf="@+id/trackImageView"
+            android:layout_marginStart="8dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_background"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/albumImageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_toEndOf="@+id/artistImageView"
+            android:layout_marginStart="8dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_background"
+            tools:ignore="ContentDescription" />
+
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/trackImageView"
-            android:text="@{track.title}"
+            android:layout_toEndOf="@+id/albumImageView"
+            android:text="@{track.strTrack}"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Track Title" />
@@ -42,8 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleTextView"
-            android:layout_toEndOf="@+id/trackImageView"
-            android:text="@{track.artist}"
+            android:layout_toEndOf="@+id/albumImageView"
+            android:text="@{track.strArtist}"
             android:textSize="14sp"
             tools:text="Artist" />
 

@@ -1,30 +1,38 @@
+// FavoriteTracksManager.kt
 package com.example.musicplayer
 
 import android.content.Context
-import android.content.SharedPreferences
-
+import com.google.gson.Gson
 
 class FavoriteTracksManager(private val context: Context) {
-    private val sharedPreferences: SharedPreferences by lazy {
+
+    private val sharedPreferences =
         context.getSharedPreferences("favorite_tracks", Context.MODE_PRIVATE)
-    }
-    private val favoriteTracks = mutableSetOf<String>()
+    private val gson = Gson()
 
-    fun getFavoriteTracks(): Set<String> {
-        return favoriteTracks
-    }
-
-    fun addTrackToFavorites(trackId: String) {
-        favoriteTracks.add(trackId)
-        saveFavoriteTracks()
-    }
-
-    fun removeTrackFromFavorites(trackId: String) {
-        favoriteTracks.remove(trackId)
-        saveFavoriteTracks()
+    fun getFavoriteTracks(): List<Track> {
+        val json = sharedPreferences.getString("favorite_tracks", null)
+        return if (json != null) {
+            gson.fromJson(json, Array<Track>::class.java).toList()
+        } else {
+            emptyList()
+        }
     }
 
-    private fun saveFavoriteTracks() {
-        sharedPreferences.edit().putStringSet("favorite_tracks", favoriteTracks).apply()
+    fun addFavoriteTrack(track: Track) {
+        val currentFavorites = getFavoriteTracks().toMutableList()
+        currentFavorites.add(track)
+        saveFavorites(currentFavorites)
+    }
+
+    fun removeFavoriteTrack(track: Track) {
+        val currentFavorites = getFavoriteTracks().toMutableList()
+        currentFavorites.remove(track)
+        saveFavorites(currentFavorites)
+    }
+
+    private fun saveFavorites(favorites: List<Track>) {
+        val json = gson.toJson(favorites.toTypedArray())
+        sharedPreferences.edit().putString("favorite_tracks", json).apply()
     }
 }

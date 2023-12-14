@@ -2,4 +2,8 @@
     <string name="app_name">MusicPlayer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="previous_button_description">previous_button_description</string>
+    <string name="play_pause_button_description">previous_button_description</string>
+    <string name="next_button_description">previous_button_description</string>
+    <string name="favorite_button_description">favorite_button_description</string>
 </resources>

@@ -1,33 +1,69 @@
+// TracksViewModel.kt
 package com.example.musicplayer
 
-
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-class TracksViewModel(private val favoriteTracksManager: FavoriteTracksManager) : ViewModel() {
 
-    // Метод для обработки нажатия на кнопку "Добавить в избранное"
-    fun onAddToFavoritesClick(track: Track) {
-        favoriteTracksManager.addTrackToFavorites(track.id)
-        // Здесь вы можете также обновить UI или выполнять другие действия при добавлении в избранное
+class TracksViewModel(private val tracksRepository: TracksRepository) : ViewModel() {
+
+    private val _tracks = MutableLiveData<List<Track>>()
+    val tracks: LiveData<List<Track>> get() = _tracks
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> get() = _error
+
+    init {
+        fetchTracks("desiredArtistName", "desiredApiKey")
+
     }
 
-    // Метод для получения списка избранных треков
-    fun getFavoriteTracks(): Set<String> {
-        return favoriteTracksManager.getFavoriteTracks()
-    }
+    fun fetchTracks(artistName: String, apiKey: String) {
+        viewModelScope.launch {
+            try {
+                setLoading(true)
+                setError(null) // Сбрасываем значение error перед запросом
 
-    // Другие методы и свойства ViewModel, если необходимо
-}
+                val result = tracksRepository.getTracks(artistName, apiKey)
 
-class TracksViewModelFactory(private val favoriteTracksManager: FavoriteTracksManager) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TracksViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return TracksViewModel(favoriteTracksManager) as T
+                setTracks(result)
+            } catch (e: Exception) {
+                setError(e.message)
+            } finally {
+                setLoading(false)
+            }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+
+
+    fun setTracks(tracks: List<Track>) {
+        _tracks.value = tracks
+    }
+
+    fun setLoading(loading: Boolean) {
+        _isLoading.value = loading
+    }
+
+    private fun setError(error: String?) {
+        _error.value = error
+    }
+    private val _selectedTrack = MutableLiveData<Track?>()
+    val selectedTrack: LiveData<Track?> get() = _selectedTrack
+
+    fun onTrackClick(track: Track) {
+        _selectedTrack.value = track
+    }
+
+    fun onTrackClickComplete() {
+        _selectedTrack.value = null
     }
 }
+
 
 
