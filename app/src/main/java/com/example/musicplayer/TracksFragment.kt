@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicplayer.databinding.FragmentTracksBinding
@@ -14,8 +17,27 @@ import kotlinx.coroutines.launch
 
 class TracksFragment : Fragment() {
 
-    private lateinit var binding: FragmentTracksBinding
-    private val viewModel: TracksViewModel by activityViewModels()
+    class TracksViewModelFactory(private val tracksRepository: TracksRepository) :
+        ViewModelProvider.Factory {
+
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(TracksViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return TracksViewModel(tracksRepository) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
+    }
+
+
+    private val tracksRepository = TracksRepository(ApiService.create())
+
+    private val viewModel: TracksViewModel by viewModels {
+        TracksViewModelFactory(tracksRepository)
+    }
+        private lateinit var binding: FragmentTracksBinding
+    //private val viewModel: TracksViewModel by activityViewModels()
+
 
     private val tracksAdapter: TracksAdapter by lazy {
         TracksAdapter { track -> viewModel.onTrackClick(track) }
@@ -60,4 +82,5 @@ class TracksFragment : Fragment() {
             }
         }
     }
+
 }
