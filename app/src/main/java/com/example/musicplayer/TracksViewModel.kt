@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-
 class TracksViewModel(private val tracksRepository: TracksRepository) : ViewModel() {
 
     private val _tracks = MutableLiveData<List<Track>>()
@@ -19,16 +18,18 @@ class TracksViewModel(private val tracksRepository: TracksRepository) : ViewMode
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> get() = _error
 
+    private val _selectedTrack = MutableLiveData<Track?>()
+    val selectedTrack: LiveData<Track?> get() = _selectedTrack
+
     init {
         fetchTracks("desiredArtistName", "desiredApiKey")
-
     }
 
     fun fetchTracks(artistName: String, apiKey: String) {
         viewModelScope.launch {
             try {
                 setLoading(true)
-                setError(null) // Сбрасываем значение error перед запросом
+                setError(null)
 
                 val result = tracksRepository.getTracks(artistName, apiKey)
 
@@ -41,7 +42,6 @@ class TracksViewModel(private val tracksRepository: TracksRepository) : ViewMode
         }
     }
 
-
     fun setTracks(tracks: List<Track>) {
         _tracks.value = tracks
     }
@@ -53,8 +53,6 @@ class TracksViewModel(private val tracksRepository: TracksRepository) : ViewMode
     private fun setError(error: String?) {
         _error.value = error
     }
-    private val _selectedTrack = MutableLiveData<Track?>()
-    val selectedTrack: LiveData<Track?> get() = _selectedTrack
 
     fun onTrackClick(track: Track) {
         _selectedTrack.value = track
@@ -63,7 +61,5 @@ class TracksViewModel(private val tracksRepository: TracksRepository) : ViewMode
     fun onTrackClickComplete() {
         _selectedTrack.value = null
     }
+    constructor() : this(TracksRepository(ApiService.create()))
 }
-
-
-

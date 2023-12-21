@@ -6,12 +6,14 @@ data class Track(
     val strTrack: String,
     val strArtist: String,
     val intDuration: Int,
-    val strTrackThumb: String, // URL изображения для трека
-    val strArtistThumb: String // URL изображения для артиста
+    val strTrackThumb: String,
+    val strArtistThumb: String
 ) {
     fun getFormattedDuration(): String {
-        // Implement formatting of duration (e.g., convert seconds to minutes:seconds)
-        return "0:00"
+        val minutes = intDuration / 60
+        val seconds = intDuration % 60
+        return "$minutes:${String.format("%02d", seconds)}"
     }
 }
+
 

@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicplayer.databinding.FragmentTracksBinding
 import kotlinx.coroutines.launch
 
-// TracksFragment.kt
 class TracksFragment : Fragment() {
 
     private lateinit var binding: FragmentTracksBinding
     private val viewModel: TracksViewModel by activityViewModels()
 
     private val tracksAdapter: TracksAdapter by lazy {
-        TracksAdapter(viewModel::onTrackClick)
+        TracksAdapter { track -> viewModel.onTrackClick(track) }
     }
 
     override fun onCreateView(
@@ -27,8 +26,6 @@ class TracksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTracksBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -36,9 +33,9 @@ class TracksFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-
-        // Fetch tracks from the API
         fetchTracks()
+        binding.loadingProgressBar.visibility = View.GONE
+
     }
 
     private fun setupRecyclerView() {
@@ -47,11 +44,9 @@ class TracksFragment : Fragment() {
     }
 
     private fun fetchTracks() {
-        // Replace with your actual API key and artist name
         val apiKey = "2"
         val artistName = "coldplay"
 
-        // Устанавливаем состояние загрузки в true перед началом запроса
         viewModel.setLoading(true)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -59,14 +54,10 @@ class TracksFragment : Fragment() {
                 val tracks = ApiService.create().searchTracks(apiKey, artistName)
                 viewModel.setTracks(tracks)
             } catch (e: Exception) {
-                // Handle the error
                 e.printStackTrace()
             } finally {
-                // Также устанавливаем состояние загрузки в false после завершения запроса
                 viewModel.setLoading(false)
             }
         }
     }
 }
-
-

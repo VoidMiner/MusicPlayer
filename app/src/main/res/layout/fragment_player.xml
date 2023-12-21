@@ -1,176 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
-    <data>
-        <variable
-            name="track"
-            type="com.example.musicplayer.Track" />
-        <variable
-            name="viewModel"
-            type="com.example.musicplayer.TracksViewModel" />
-    </data>
+    <ImageView
+        android:id="@+id/albumImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_corner_background"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+    <ImageView
+        android:id="@+id/artistImageView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/circle_background"
+        app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titleTextView"
+        tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/albumImageView"
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="5dp"
+        android:text="@{track.strTrack}"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/shareButton"
+        app:layout_constraintStart_toEndOf="@+id/artistImageView"
+        app:layout_constraintTop_toBottomOf="@+id/albumImageView"
+        tools:text="Track Title" />
+
+    <ImageButton
+        android:id="@+id/shareButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_share"
+        app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titleTextView" />
+
+    <TextView
+        android:id="@+id/artistTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@{track.strArtist}"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+        app:layout_constraintStart_toStartOf="@+id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/artistImageView"
+        tools:text="Artist" />
+
+    <LinearLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artistTextView">
+
+        <TextView
+            android:id="@+id/progressTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0:00"
+            android:textSize="14sp" />
+
+        <Space
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_corner_background"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/artistImageView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/circle_background"
-            app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/titleTextView"
-            tools:ignore="ContentDescription" />
+            android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="0dp"
+            android:id="@+id/totalTimeTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="5dp"
-            android:text="@{track.strTrack}"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/shareButton"
-            app:layout_constraintStart_toEndOf="@+id/artistImageView"
-            app:layout_constraintTop_toBottomOf="@+id/albumImageView"
-            tools:text="Track Title" />
+            android:text="0:00"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/controlButtonsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressLayout">
 
         <ImageButton
-            android:id="@+id/shareButton"
+            android:id="@+id/previousButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="28dp"
-            android:src="@android:drawable/ic_menu_share"
-            app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/titleTextView" />
+            android:contentDescription="@string/previous_button_description"
+            android:onClick="@{() -> viewModel.onPreviousClick()}"
+            android:src="@android:drawable/ic_media_previous" />
 
-        <TextView
-            android:id="@+id/artistTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{track.strArtist}"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/titleTextView"
-            app:layout_constraintStart_toStartOf="@+id/titleTextView"
-            app:layout_constraintTop_toBottomOf="@+id/artistImageView"
-            tools:text="Artist" />
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
 
-        <LinearLayout
-            android:id="@+id/progressLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/artistTextView">
+        <ImageButton
+            android:id="@+id/playPauseButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:contentDescription="@string/play_pause_button_description"
+            android:onClick="@{() -> viewModel.onPlayPauseClick()}"
+            android:src="@android:drawable/ic_media_play" />
 
-            <TextView
-                android:id="@+id/progressTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0:00"
-                android:textSize="14sp" />
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+        <ImageButton
+            android:id="@+id/nextButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/next_button_description"
+            android:onClick="@{() -> viewModel.onNextClick()}"
+            android:src="@android:drawable/ic_media_next" />
 
-            <TextView
-                android:id="@+id/totalTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0:00"
-                android:textSize="14sp" />
-        </LinearLayout>
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
 
-        <LinearLayout
-            android:id="@+id/controlButtonsLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progressLayout">
-
-            <ImageButton
-                android:id="@+id/previousButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/ic_media_previous"
-                android:onClick="@{() -> viewModel.onPreviousClick()}"
-                android:contentDescription="@string/previous_button_description"/>
-
-            <Space
-                android:layout_width="16dp"
-                android:layout_height="0dp"/>
-
-            <ImageButton
-                android:id="@+id/playPauseButton"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:contentDescription="@string/play_pause_button_description"
-                android:onClick="@{() -> viewModel.onPlayPauseClick()}"
-                android:src="@android:drawable/ic_media_play" />
-
-            <Space
-                android:layout_width="16dp"
-                android:layout_height="0dp"/>
-
-            <ImageButton
-                android:id="@+id/nextButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/ic_media_next"
-                android:onClick="@{() -> viewModel.onNextClick()}"
-                android:contentDescription="@string/next_button_description"/>
-
-            <Space
-                android:layout_width="16dp"
-                android:layout_height="0dp"/>
-
-            <ImageButton
-                android:id="@+id/favoriteImageView"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/btn_star_big_off"
-                android:onClick="@{() -> viewModel.onAddToFavoritesClick(track)}"
-                android:contentDescription="@string/favorite_button_description"/>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
-
-
-
-
-
-
-
-
-
+        <ImageButton
+            android:id="@+id/favoriteImageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/favorite_button_description"
+            android:onClick="@{() -> viewModel.onAddToFavoritesClick(track)}"
+            android:src="@android:drawable/btn_star_big_off" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

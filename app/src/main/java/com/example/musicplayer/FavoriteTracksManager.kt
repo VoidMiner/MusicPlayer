@@ -4,6 +4,7 @@ package com.example.musicplayer
 import android.content.Context
 import com.google.gson.Gson
 
+
 class FavoriteTracksManager(private val context: Context) {
 
     private val sharedPreferences =
@@ -29,6 +30,10 @@ class FavoriteTracksManager(private val context: Context) {
         val currentFavorites = getFavoriteTracks().toMutableList()
         currentFavorites.remove(track)
         saveFavorites(currentFavorites)
+    }
+
+    fun isFavorite(track: Track): Boolean {
+        return getFavoriteTracks().contains(track)
     }
 
     private fun saveFavorites(favorites: List<Track>) {

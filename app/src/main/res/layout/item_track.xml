@@ -1,79 +1,64 @@
 <!-- item_track.xml -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:padding="16dp">
 
-    <data>
-        <variable
-            name="track"
-            type="com.example.musicplayer.Track" />
-        <variable
-            name="viewModel"
-            type="com.example.musicplayer.TracksViewModel" />
-    </data>
+    <ImageView
+        android:id="@+id/trackImageView"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_music_placeholder"
+        tools:ignore="ContentDescription" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/artistImageView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_toEndOf="@+id/trackImageView"
+        android:layout_marginStart="8dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle_background"
+         />
+
+    <ImageView
+        android:id="@+id/albumImageView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_toEndOf="@+id/artistImageView"
+        android:layout_marginStart="8dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle_background"
+         />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_toEndOf="@+id/albumImageView"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Track Title" />
 
-        <ImageView
-            android:id="@+id/trackImageView"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/ic_music_placeholder"
-            tools:ignore="ContentDescription" />
+    <TextView
+        android:id="@+id/artistTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:layout_toEndOf="@+id/albumImageView"
+        android:textSize="14sp"
+        tools:text="Artist" />
 
-        <ImageView
-            android:id="@+id/artistImageView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_toEndOf="@+id/trackImageView"
-            android:layout_marginStart="8dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/circle_background"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/albumImageView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_toEndOf="@+id/artistImageView"
-            android:layout_marginStart="8dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/circle_background"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/albumImageView"
-            android:text="@{track.strTrack}"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="Track Title" />
-
-        <TextView
-            android:id="@+id/artistTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/titleTextView"
-            android:layout_toEndOf="@+id/albumImageView"
-            android:text="@{track.strArtist}"
-            android:textSize="14sp"
-            tools:text="Artist" />
-
-        <ImageView
-            android:id="@+id/favoriteImageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_favorite"
-            android:onClick="@{() -> viewModel.onAddToFavoritesClick(track)}" />
-
-    </RelativeLayout>
-</layout>
+    <ImageView
+        android:id="@+id/favoriteImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_favorite"
+        tools:ignore="ContentDescription" />
+</RelativeLayout>
